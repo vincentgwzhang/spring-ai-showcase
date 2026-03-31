@@ -1,4 +1,4 @@
-# Spring AI Showcase Demo Project [![Twitter](https://img.shields.io/twitter/follow/piotr_minkowski.svg?style=social&logo=twitter&label=Follow%20Me)](https://twitter.com/piotr_minkowski)
+# Spring AI Showcase Demo Project
 
 -----
 

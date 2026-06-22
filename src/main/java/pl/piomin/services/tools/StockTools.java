@@ -25,7 +25,7 @@ public class StockTools {
         this.restTemplate = restTemplate;
     }
 
-    @Tool(description = "Latest stock prices")
+    @Tool(description = "Get the latest available stock closing price for a requested company or stock ticker symbol.")
     public StockResponse getLatestStockPrices(@ToolParam(description = "Name of company") String company) {
         LOG.info("Get stock prices for: {}", company);
         StockData data = restTemplate.getForObject("https://api.twelvedata.com/time_series?symbol={0}&interval=1min&outputsize=1&apikey={1}",
@@ -37,7 +37,7 @@ public class StockTools {
         return new StockResponse(Float.parseFloat(latestData.getClose()));
     }
 
-    @Tool(description = "Historical daily stock prices")
+    @Tool(description = "Get historical daily stock closing prices for a requested company or stock ticker symbol over a specified number of days.")
     public List<DailyShareQuote> getHistoricalStockPrices(@ToolParam(description = "Search period in days") int days,
                                                           @ToolParam(description = "Name of company") String company) {
         LOG.info("Get historical stock prices: {} for {} days", company, days);

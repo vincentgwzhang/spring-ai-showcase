@@ -1,6 +1,5 @@
 package pl.piomin.services.controller;
 
-import org.springframework.ai.embedding.EmbeddingModel;
 import tools.jackson.databind.json.JsonMapper;
 import jakarta.transaction.NotSupportedException;
 import org.slf4j.Logger;
@@ -96,7 +95,7 @@ public class ImageController {
         ImageResponse ir = imageModel.call(new ImagePrompt("Generate an image with " + object, ImageOptionsBuilder.builder()
                 .height(1024)
                 .width(1024)
-                .N(1)
+                .n(1)
                 .responseFormat("url")
                 .build()));
         String url = ir.getResult().getOutput().getUrl();
@@ -173,7 +172,7 @@ public class ImageController {
         ImageResponse ir = imageModel.call(new ImagePrompt("Generate an image with " + object, ImageOptionsBuilder.builder()
                 .height(1024)
                 .width(1024)
-                .N(1)
+                .n(1)
                 .responseFormat("url")
                 .build()));
         UrlResource url = new UrlResource(ir.getResult().getOutput().getUrl());

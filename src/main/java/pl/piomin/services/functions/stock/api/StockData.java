@@ -1,7 +1,5 @@
 package pl.piomin.services.functions.stock.api;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class StockData {

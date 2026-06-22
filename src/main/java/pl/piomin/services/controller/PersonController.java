@@ -1,11 +1,7 @@
 package pl.piomin.services.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.client.advisor.StructuredOutputValidationAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,10 +25,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/persons")
-@RequiredArgsConstructor
 public class PersonController {
 
     private final ChatClient chatClient;
+
+    public PersonController(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder
+                .defaultAdvisors(new SimpleLoggerAdvisor())
+                .build();
+    }
 
     @GetMapping
     public List<Person> findAll() {

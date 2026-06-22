@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -36,6 +37,10 @@ public class VectorService {
 
     public VectorService(EmbeddingModel embeddingModel) {
         this.embeddingModel = embeddingModel;
+    }
+
+    @PostConstruct
+    void init() {
         loadPdfAndIndex("data/refund_policy.pdf");
     }
 
@@ -59,8 +64,13 @@ public class VectorService {
         String[] paragraphs = text.split("\n\n");
         StringBuilder currentChunk = new StringBuilder();
         for (String paragraph : paragraphs) {
+            if (paragraph.isBlank()) {
+                continue;
+            }
             if (currentChunk.length() + paragraph.length() > chunkSize) {
-                chunks.add(currentChunk.toString());
+                if (!currentChunk.isEmpty()) {
+                    chunks.add(currentChunk.toString().trim());
+                }
                 int overlapStart = Math.max(0, currentChunk.length() - chunkOverlap);
                 currentChunk = new StringBuilder(
                     currentChunk.substring(overlapStart)
@@ -69,7 +79,7 @@ public class VectorService {
             currentChunk.append(paragraph).append("\n\n");
         }
         if (!currentChunk.isEmpty()) {
-            chunks.add(currentChunk.toString());
+            chunks.add(currentChunk.toString().trim());
         }
         return chunks;
     }
@@ -82,7 +92,6 @@ public class VectorService {
         List<String> splitChunks = chunkText(text);
 
         System.out.println("Chunking completed. Total chunks: " + splitChunks.size());
-
         for (String chunk : splitChunks) {
             float[] embedding = embeddingModel.embed(chunk);
             chunks.add(chunk);
